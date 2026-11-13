@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: ecommerce-sales-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ecommerce_dw
+      POSTGRES_USER: ecommerce_user
+      POSTGRES_PASSWORD: ecommerce_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ecommerce_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommerce_user -d ecommerce_dw"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ecommerce_postgres_data:
